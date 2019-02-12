@@ -17,18 +17,16 @@ export default {
   data () {
     return {
       titulo: 'Pic',
-      fotos: [
-        {
-          url: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTwV4kVzT5McBdGSgqlVeRzubrNH_mOrrkKseDOGFURq20HmsrelEfMU7It',
-          titulo: 'Cachorro'
-        },
-        {
-          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOhmlmzV4-Sifx5BIc2SXeA-1CtZJf8jb8V_vPZyKbXIQJKU-rkxGO6OM',
-          titulo: 'Gato'
-        }
-      ]
+      fotos: []
     }
-  }
+  },
+
+  created() {
+    this.$http.get('http://localhost:3000/v1/fotos')
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos)
+
+  },
 }
 </script>
 
