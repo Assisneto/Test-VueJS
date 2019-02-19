@@ -12,11 +12,7 @@
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="(foto, index) of fotosComFiltro" :key="index">
         <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva
-            :url="foto.url"
-            :titulo="foto.titulo"
-            v-transform="{increment: 30, animate:true}"
-          />
+          <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-transform:rotate.animate="30"/>
           <meu-botao
             rotulo="remover"
             tipo="button"
