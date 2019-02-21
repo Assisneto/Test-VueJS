@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1 class="centralizado">{{ titulo }}</h1>
+    <p class="centralizado">{{ mensagem }}</p>
 
     <input
       type="search"
@@ -10,7 +11,7 @@
     >
 
     <ul class="lista-fotos">
-      <li class="lista-fotos-item" v-for="(foto, index) of fotosComFiltro" :key="index">
+      <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto.id">
         <meu-painel :titulo="foto.titulo">
           <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-transform:rotate.animate="30"/>
           <meu-botao
@@ -41,7 +42,8 @@ export default {
     return {
       titulo: "Alurapic",
       fotos: [],
-      filtro: ""
+      filtro: "",
+      mensagem: ""
     };
   },
 
@@ -58,13 +60,23 @@ export default {
 
   created() {
     this.$http
-      .get("http://localhost:3000/v1/fotos")
+      .get("v1/fotos")
       .then(res => res.json())
       .then(fotos => (this.fotos = fotos), err => console.log(err));
   },
   methods: {
     remove(foto) {
-      alert(foto.titulo);
+      this.$http.delete(`v1/fotos/${foto._id}`).then(
+        () => {
+          let indice = this.fotos.indexOf(foto);
+          this.fotos.splice(indice, 1);
+          this.mensagem = "Foto removida com sucesso";
+        },
+        err => {
+          this.mensagem = "Não foi possível remover a foto";
+          console.log(err);
+        }
+      );
     }
   }
 };
