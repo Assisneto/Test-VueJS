@@ -43,14 +43,23 @@ export default {
 
   data() {
     return {
-      foto: new Foto()
+      foto: new Foto(),
+      id: this.$route.params.id
     };
+  },
+  created() {
+    if (this.id) {
+      this.busca(this.id).then(foto => (this.foto = foto));
+    }
   },
   methods: {
     save() {
       this.$http
-        .post("/v1/fotos", this.foto)
+        .post("v1/fotos", this.foto)
         .then(() => (this.foto = new Foto()), err => console.log(err));
+    },
+    busca(id) {
+      return this.$http.get(`v1/fotos/${id}`).then(res => res.json());
     }
   }
 };
